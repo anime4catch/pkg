@@ -1,22 +1,21 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <title>تفعيل حساب Anime Catch</title>
+    <title>Anime Catch Authentication</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* تعريف الألوان الأساسية */
         :root {
-            --primary-gold: #C1973E; /* اللون الذهبي المطلوب */
+            --primary-gold: #C1973E;
             --gold-gradient: linear-gradient(135deg, #C1973E, #e0b75c);
-            --bg-dark: #0a0a0a; /* خلفية سوداء عميقة */
-            --card-dark: #1c1c1c; /* لون البطاقة */
+            --bg-dark: #0a0a0a;
+            --card-dark: #1c1c1c;
             --text-light: #ffffff;
         }
 
         body {
-            font-family: 'Cairo', sans-serif; /* استخدام الخط الفخم */
+            font-family: 'Roboto', sans-serif;
             text-align: center;
             padding: 20px;
             background-color: var(--bg-dark);
@@ -24,25 +23,24 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 95vh; /* توسيط عمودي للصفحة */
+            min-height: 95vh;
             margin: 0;
-            background-image: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%); /* تدرج خلفية خفيف */
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
         }
 
         .card {
             background: var(--card-dark);
             padding: 40px 30px;
             border-radius: 25px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6); /* ظل قوي للعمق */
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
             display: inline-block;
             max-width: 450px;
             width: 100%;
-            border-top: 5px solid var(--primary-gold); /* لمسة ذهبية علوية */
+            border-top: 5px solid var(--primary-gold);
             position: relative;
             overflow: hidden;
         }
 
-        /* تأثير لمعان خفيف على البطاقة */
         .card::before {
             content: '';
             position: absolute;
@@ -58,12 +56,12 @@
             width: 130px;
             height: auto;
             margin-bottom: 25px;
-            /* ظل خفيف ذهبي للشعار */
             filter: drop-shadow(0 0 15px rgba(193, 151, 62, 0.4));
             transition: transform 0.3s ease;
         }
-        .logo-img:hover {
-             transform: scale(1.05);
+        
+        .logo-img:hover { 
+            transform: scale(1.05); 
         }
 
         h1 {
@@ -74,26 +72,25 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            opacity: 0.9;
-            color: #e0e0e0;
+        p { 
+            font-size: 1.1rem; 
+            line-height: 1.6; 
+            opacity: 0.9; 
+            color: #e0e0e0; 
+        }
+        
+        .sub-text { 
+            font-size: 0.95rem; 
+            opacity: 0.7; 
+            margin-top: 10px; 
         }
 
-        .sub-text {
-             font-size: 0.95rem;
-             opacity: 0.7;
-             margin-top: 10px;
-        }
-
-        /* زر ذهبي فخم */
         .btn {
             background: var(--gold-gradient);
-            color: #000000; /* نص أسود على خلفية ذهبية للتباين */
+            color: #000000;
             padding: 16px 35px;
             text-decoration: none;
-            border-radius: 50px; /* حواف دائرية */
+            border-radius: 50px;
             display: inline-block;
             margin-top: 35px;
             font-weight: 700;
@@ -111,56 +108,52 @@
             color: var(--primary-gold);
         }
 
-        /* لودر ذهبي */
         .loader {
             border: 3px solid rgba(193, 151, 62, 0.1);
             border-top: 3px solid var(--primary-gold);
             border-radius: 50%;
             width: 45px;
             height: 45px;
-            animation: spin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite; /* دوران ناعم */
+            animation: spin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
             margin: 30px auto 10px;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
     </style>
 </head>
 <body>
     <div class="card">
-        <img src="copilot_image_1772902471006.jpeg" alt="Anime Catch Logo" class="logo-img" onerror="this.style.display='none'">
+        <img src="logo.png" alt="Anime Catch Logo" class="logo-img" onerror="this.style.display='none'">
 
-        <h1>أهلاً بك في عالم الأنمي!</h1>
-        <p>تم استلام طلب التفعيل الخاص بك.</p>
-        <p class="sub-text">سيتم نقلك الآن إلى التطبيق لإكمال رحلتك...</p>
+        <h1>Welcome to the Anime World!</h1>
+        <p>Your authentication request has been received.</p>
+        <p class="sub-text">You will now be redirected to the app to continue your journey...</p>
 
         <div class="loader"></div>
 
-        <a id="app-link" href="#" class="btn">الانتقال للتطبيق يدوياً</a>
+        <a id="app-link" href="#" class="btn">Proceed to App Manually</a>
     </div>
 
     <script>
-        // جلب البيانات من رابط الإيميل
-        const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('userId');
-        const secret = urlParams.get('secret');
+        const hash = window.location.hash;
 
-        // التأكد من صحة الرابط
-        if(userId && secret) {
-            // بناء الرابط الخاص بالتطبيق
-            const appLink = `animecatch://callback?userId=${userId}&secret=${secret}`;
+        if(hash && hash.includes("access_token=")) {
+            const appLink = "animecatch://login" + hash;
             document.getElementById('app-link').href = appLink;
 
-            // محاولة التحويل التلقائي بعد 1.5 ثانية ليرى المستخدم التصميم
             setTimeout(() => {
                  window.location.href = appLink;
             }, 1500);
         } else {
-             // في حال فتح الصفحة بدون رابط تفعيل صحيح
-             document.querySelector('.card h1').innerText = "خطأ في الرابط";
-             document.querySelector('.card p').innerText = "عذراً، رابط التفعيل هذا غير صالح أو منتهي.";
+             document.querySelector('.card h1').innerText = "Authentication Error";
+             document.querySelector('.card p').innerText = "Sorry, no login credentials were found.";
              document.querySelector('.sub-text').style.display = 'none';
              document.querySelector('.loader').style.display = 'none';
              document.querySelector('.btn').style.display = 'none';
-             document.querySelector('.logo-img').style.filter = 'grayscale(100%) opacity(0.5)'; // جعل الشعار رمادي
+             document.querySelector('.logo-img').style.filter = 'grayscale(100%) opacity(0.5)';
         }
     </script>
 </body>
