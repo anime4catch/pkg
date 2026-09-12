@@ -12,6 +12,7 @@
             --bg-dark: #0a0a0a;
             --card-dark: #1c1c1c;
             --text-light: #ffffff;
+            --success-green: #2ecc71;
         }
 
         body {
@@ -34,11 +35,12 @@
             border-radius: 25px;
             box-shadow: 0 15px 40px rgba(0,0,0,0.6);
             display: inline-block;
-            max-width: 450px;
+            max-width: 480px;
             width: 100%;
             border-top: 5px solid var(--primary-gold);
             position: relative;
             overflow: hidden;
+            box-sizing: border-box;
         }
 
         .card::before {
@@ -53,9 +55,9 @@
         }
 
         .logo-img {
-            width: 130px;
+            width: 120px;
             height: auto;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             filter: drop-shadow(0 0 15px rgba(193, 151, 62, 0.4));
             transition: transform 0.3s ease;
         }
@@ -67,60 +69,103 @@
         h1 {
             color: var(--primary-gold);
             font-weight: 700;
-            font-size: 1.8rem;
-            margin-bottom: 15px;
+            font-size: 1.7rem;
+            margin-bottom: 12px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         p { 
-            font-size: 1.1rem; 
+            font-size: 1.05rem; 
             line-height: 1.6; 
             opacity: 0.9; 
-            color: #e0e0e0; 
+            color: #e0e0e0;
+            margin: 8px 0;
         }
         
         .sub-text { 
             font-size: 0.95rem; 
-            opacity: 0.7; 
+            opacity: 0.75; 
             margin-top: 10px; 
         }
 
         .btn {
             background: var(--gold-gradient);
             color: #000000;
-            padding: 16px 35px;
+            padding: 14px 28px;
             text-decoration: none;
             border-radius: 50px;
             display: inline-block;
-            margin-top: 35px;
+            margin-top: 20px;
             font-weight: 700;
-            font-size: 1.1rem;
-            box-shadow: 0 5px 20px rgba(193, 151, 62, 0.5);
+            font-size: 1rem;
+            box-shadow: 0 5px 20px rgba(193, 151, 62, 0.4);
             transition: all 0.3s ease;
             border: 2px solid transparent;
+            cursor: pointer;
         }
 
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(193, 151, 62, 0.7);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(193, 151, 62, 0.6);
             background: transparent;
             border-color: var(--primary-gold);
             color: var(--primary-gold);
+        }
+
+        .btn-secondary {
+            background: #2b2b2b;
+            color: #ffffff;
+            box-shadow: none;
+            border: 1px solid #444;
+            margin-left: 8px;
+            margin-right: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: #383838;
+            border-color: #888;
+            color: #fff;
         }
 
         .loader {
             border: 3px solid rgba(193, 151, 62, 0.1);
             border-top: 3px solid var(--primary-gold);
             border-radius: 50%;
-            width: 45px;
-            height: 45px;
+            width: 42px;
+            height: 42px;
             animation: spin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-            margin: 30px auto 10px;
+            margin: 25px auto 15px;
         }
         
         @keyframes spin { 
             0% { transform: rotate(0deg); } 
             100% { transform: rotate(360deg); } 
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .success-box {
+            display: none;
+            background: rgba(46, 204, 113, 0.12);
+            border: 1px solid rgba(46, 204, 113, 0.4);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+
+        .success-box h2 {
+            color: var(--success-green);
+            font-size: 1.2rem;
+            margin: 0 0 6px 0;
         }
     </style>
 </head>
@@ -128,33 +173,129 @@
     <div class="card">
         <img src="copilot_image_1775508360718.jpeg" alt="Anime Catch Logo" class="logo-img" onerror="this.style.display='none'">
 
-        <h1>Welcome to the Anime World!</h1>
-        <p>Your authentication request has been received.</p>
-        <p class="sub-text">You will now be redirected to the app to continue your journey...</p>
+        <h1 id="title-text">Connecting with Anime Catch...</h1>
+        <p id="msg-text">Authentication token detected.</p>
+        <p id="sub-msg" class="sub-text">Linking session with your PC application...</p>
 
-        <div class="loader"></div>
+        <div id="loader" class="loader"></div>
 
-        <a id="app-link" href="#" class="btn">Proceed to App Manually</a>
+        <div id="success-box" class="success-box">
+            <h2>Connected to PC App!</h2>
+            <p style="font-size: 0.95rem; color: #d4edda; margin: 0;">تم تسليم التوكن لتطبيق الكمبيوتر بنجاح! يمكنك الآن العودة للتطبيق.</p>
+        </div>
+
+        <div id="actions-container" style="margin-top: 15px;">
+            <a id="app-link" href="#" class="btn">Open App Directly</a>
+            <button id="btn-copy" class="btn btn-secondary" onclick="copyToken()">Copy Token</button>
+        </div>
     </div>
 
     <script>
-        const hash = window.location.hash;
+        let extractedToken = "";
 
-        if(hash && hash.includes("access_token=")) {
-            const appLink = "animecatch://login" + hash;
-            document.getElementById('app-link').href = appLink;
-
-            setTimeout(() => {
-                 window.location.href = appLink;
-            }, 1500);
-        } else {
-             document.querySelector('.card h1').innerText = "Authentication Error";
-             document.querySelector('.card p').innerText = "Sorry, no login credentials were found.";
-             document.querySelector('.sub-text').style.display = 'none';
-             document.querySelector('.loader').style.display = 'none';
-             document.querySelector('.btn').style.display = 'none';
-             document.querySelector('.logo-img').style.filter = 'grayscale(100%) opacity(0.5)';
+        // 1. استخراج التوكن من الـ Hash أو Query Params
+        function getTokenFromUrl() {
+            const hash = window.location.hash;
+            if (hash && hash.includes("access_token=")) {
+                const params = new URLSearchParams(hash.substring(1));
+                return params.get("access_token");
+            }
+            const query = window.location.search;
+            if (query && query.includes("access_token=")) {
+                const params = new URLSearchParams(query);
+                return params.get("access_token");
+            }
+            return null;
         }
+
+        // 2. إرسال التوكن مباشرة إلى خادم تطبيق فلاتر على الكمبيوتر
+        async function sendTokenToPcApp(token) {
+            try {
+                const url = "http://127.0.0.1:57342/auth?token=" + encodeURIComponent(token);
+                const response = await fetch(url, {
+                    method: "GET",
+                    mode: "cors"
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.status === "success") {
+                        onConnectedSuccessfully();
+                        return true;
+                    }
+                }
+            } catch (err) {
+                console.log("Local PC server not responding yet...", err);
+            }
+            return false;
+        }
+
+        function onConnectedSuccessfully() {
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('title-text').innerText = "Logged In Successfully! 🎉";
+            document.getElementById('title-text').style.color = "#2ecc71";
+            document.getElementById('msg-text').innerText = "Session connected with Anime Catch.";
+            document.getElementById('sub-msg').style.display = 'none';
+            document.getElementById('success-box').style.display = 'block';
+            document.getElementById('app-link').innerText = "Return to App";
+        }
+
+        function copyToken() {
+            if (!extractedToken) return;
+            navigator.clipboard.writeText(extractedToken).then(() => {
+                const btn = document.getElementById('btn-copy');
+                const orig = btn.innerText;
+                btn.innerText = "Copied! ✓";
+                btn.style.borderColor = "#2ecc71";
+                btn.style.color = "#2ecc71";
+                setTimeout(() => {
+                    btn.innerText = orig;
+                    btn.style.borderColor = "#444";
+                    btn.style.color = "#ffffff";
+                }, 2000);
+            });
+        }
+
+        // 3. التنفيذ عند فتح الصفحة
+        window.addEventListener('DOMContentLoaded', async () => {
+            extractedToken = getTokenFromUrl();
+
+            if (extractedToken) {
+                const hash = window.location.hash || ("#access_token=" + extractedToken);
+                const appProtocolLink = "animecatch://login" + hash;
+                document.getElementById('app-link').href = appProtocolLink;
+
+                // المحاولة الأولى للاتصال بتطبيق الكمبيوتر مباشرة
+                let connected = await sendTokenToPcApp(extractedToken);
+
+                // إذا لم يتم الاتصال، نعيد المحاولة مرتين بفارق زمني (في حال كان التطبيق يستغرق ثواني ليفتح)
+                if (!connected) {
+                    setTimeout(async () => {
+                        connected = await sendTokenToPcApp(extractedToken);
+                        if (!connected) {
+                            setTimeout(async () => {
+                                await sendTokenToPcApp(extractedToken);
+                            }, 2500);
+                        }
+                    }, 1200);
+                }
+
+                // محاولة توجيه البروتوكول أيضاً للهاتف أو الويندوز
+                setTimeout(() => {
+                    try {
+                        window.location.href = appProtocolLink;
+                    } catch(e) {}
+                }, 1500);
+
+            } else {
+                document.getElementById('title-text').innerText = "Authentication Error";
+                document.getElementById('msg-text').innerText = "Sorry, no login credentials were found.";
+                document.getElementById('sub-msg').style.display = 'none';
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('actions-container').style.display = 'none';
+                document.querySelector('.logo-img').style.filter = 'grayscale(100%) opacity(0.5)';
+            }
+        });
     </script>
 </body>
 </html>
